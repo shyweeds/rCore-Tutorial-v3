@@ -31,7 +31,7 @@ pub fn init() {
         safe fn __alltraps();
     }
     unsafe {
-        stvec::write(__alltraps as usize, TrapMode::Direct);
+        stvec::write(__alltraps as *const u8 as usize, TrapMode::Direct);
     }
 }
 

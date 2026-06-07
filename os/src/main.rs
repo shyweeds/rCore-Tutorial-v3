@@ -42,8 +42,11 @@ fn clear_bss() {
         safe fn ebss();
     }
     unsafe {
-        core::slice::from_raw_parts_mut(sbss as usize as *mut u8, ebss as usize - sbss as usize)
-            .fill(0);
+        core::slice::from_raw_parts_mut(
+            sbss as *const u8 as usize as *mut u8,
+            ebss as *const u8 as usize - sbss as *const u8 as usize,
+        )
+        .fill(0);
     }
 }
 
@@ -67,21 +70,24 @@ pub fn rust_main() -> ! {
     println!("[kernel] Hello, world!");
     trace!(
         "[kernel] .text [{:#x}, {:#x})",
-        stext as usize, etext as usize
+        stext as *const u8 as usize, etext as *const u8 as usize
     );
     debug!(
         "[kernel] .rodata [{:#x}, {:#x})",
-        srodata as usize, erodata as usize
+        srodata as *const u8 as usize, erodata as *const u8 as usize
     );
     info!(
         "[kernel] .data [{:#x}, {:#x})",
-        sdata as usize, edata as usize
+        sdata as *const u8 as usize, edata as *const u8 as usize
     );
     warn!(
         "[kernel] boot_stack top=bottom={:#x}, lower_bound={:#x}",
-        boot_stack_top as usize, boot_stack_lower_bound as usize
+        boot_stack_top as *const u8 as usize, boot_stack_lower_bound as *const u8 as usize
     );
-    error!("[kernel] .bss [{:#x}, {:#x})", sbss as usize, ebss as usize);
+    error!(
+        "[kernel] .bss [{:#x}, {:#x})",
+        sbss as *const u8 as usize, ebss as *const u8 as usize
+    );
     trap::init();
     batch::init();
     batch::run_next_app();
