@@ -28,7 +28,7 @@ impl TaskContext {
             unsafe fn __restore();
         }
         Self {
-            ra: __restore as usize,
+            ra: __restore as *const () as usize,
             sp: kstack_ptr,
             s: [0; 12],
         }
