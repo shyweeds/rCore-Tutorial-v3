@@ -54,7 +54,7 @@ impl TaskControlBlock {
             user_sp,
             KERNEL_SPACE.exclusive_access().token(),
             kernel_stack_top,
-            trap_handler as usize,
+            trap_handler as *const () as usize,
         );
         task_control_block
     }
