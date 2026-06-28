@@ -81,9 +81,18 @@ impl MemorySet {
         // map trampoline
         memory_set.map_trampoline();
         // map kernel sections
-        println!(".text [{:#x}, {:#x})", stext as *const () as usize, etext as *const () as usize);
-        println!(".rodata [{:#x}, {:#x})", srodata as *const () as usize, erodata as *const () as usize);
-        println!(".data [{:#x}, {:#x})", sdata as *const () as usize, edata as *const () as usize);
+        println!(
+            ".text [{:#x}, {:#x})",
+            stext as *const () as usize, etext as *const () as usize
+        );
+        println!(
+            ".rodata [{:#x}, {:#x})",
+            srodata as *const () as usize, erodata as *const () as usize
+        );
+        println!(
+            ".data [{:#x}, {:#x})",
+            sdata as *const () as usize, edata as *const () as usize
+        );
         println!(
             ".bss [{:#x}, {:#x})",
             sbss_with_stack as *const () as usize, ebss as *const () as usize
@@ -383,9 +392,12 @@ bitflags! {
 #[allow(unused)]
 pub fn remap_test() {
     let mut kernel_space = KERNEL_SPACE.exclusive_access();
-    let mid_text: VirtAddr = ((stext as *const () as usize + etext as *const () as usize) / 2).into();
-    let mid_rodata: VirtAddr = ((srodata as *const () as usize + erodata as *const () as usize) / 2).into();
-    let mid_data: VirtAddr = ((sdata as *const () as usize + edata as *const () as usize) / 2).into();
+    let mid_text: VirtAddr =
+        ((stext as *const () as usize + etext as *const () as usize) / 2).into();
+    let mid_rodata: VirtAddr =
+        ((srodata as *const () as usize + erodata as *const () as usize) / 2).into();
+    let mid_data: VirtAddr =
+        ((sdata as *const () as usize + edata as *const () as usize) / 2).into();
     assert!(
         !kernel_space
             .page_table
